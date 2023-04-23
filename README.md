@@ -21,7 +21,7 @@
 
 ![Página do usuário](https://i.imgur.com/CXOPOAq.png)
 
-### 3 - Edição
+### 4 - Edição
 > Formulário de edição do usuário
 
 ![Edição do usuário](https://i.imgur.com/466Z4LE.png)
