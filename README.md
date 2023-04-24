@@ -105,9 +105,9 @@ Inicializando o projeto 👇
     npm run dev
 ```
 
-## Links
+## Vídeo de apresentação
 
-* Apresentação no YouTube: https://www.youtube.com/watch?v=nyWizV9M9hw
+https://user-images.githubusercontent.com/70549313/233874112-c15e639d-674c-4f01-9b3b-508a9595f716.mp4
 
 ## Autor
 
