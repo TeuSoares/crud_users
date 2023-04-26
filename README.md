@@ -33,7 +33,7 @@
 * PHP
 * Banco de dados (MySql)
 * Styled-Components
-* Arquitetura MVC (Slim Framework)
+* Arquitetura MVC
 
 ## Funcionalidades
 * [x] Cadastro de usuários, com as devidas validações de inputs
