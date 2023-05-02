@@ -7,14 +7,14 @@ class Validation
 {
     private static $msg = [];
 
-    public static function checkEmptyFields(array $fields)
+    public static function checkEmptyFields(array $fields): void
     {
         foreach ($fields as $value) {
             if (empty(trim($value))) array_push(self::$msg, Messages::setMessage("error", "Todos os campos são obrigatórios!")); 
         }
     }
 
-    public static function verifyFieldLength(array $fields)
+    public static function verifyFieldLength(array $fields): void
     {
         foreach ($fields as $values) {
             $newArray = explode(" ", $values[0]);
@@ -51,14 +51,14 @@ class Validation
         }
     }
 
-    public static function verifyFieldIsNumeric(array $fields)
+    public static function verifyFieldIsNumeric(array $fields): void
     {
         foreach ($fields as $key => $value) {
             if(!ctype_digit($value)) array_push(self::$msg, Messages::setMessage("error", "O campo $key só pode conter números!"));
         }
     }
 
-    public static function checkDateValid($date, $msg)
+    public static function checkDateValid($date, $msg): void
     {
         if ($date) {
             $explode = explode("-", $date);
@@ -68,14 +68,14 @@ class Validation
         }
     }
 
-    public static function onlyLetters(array $fields)
+    public static function onlyLetters(array $fields): void
     {
         foreach ($fields as $key => $value) {
             if (!preg_match("/^([a-zA-Zà-úÀ-Ú]|\s+)+$/", $value)) array_push(self::$msg, Messages::setMessage("error", "O campo $key só pode conter letras!"));
         }
     }
 
-    public static function setErrors(string $msg)
+    public static function setErrors(string $msg): void
     {
         array_push(self::$msg, Messages::setMessage("error", $msg));
     }

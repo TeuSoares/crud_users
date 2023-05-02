@@ -4,23 +4,20 @@ namespace App\Controllers;
 use \Psr\Http\Message\ResponseInterface as Response;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 
-use App\Models\UserModels;
+use App\Helpers\Controller;
 
-class UserControllers 
+class UserControllers extends Controller
 {
-    private UserModels $model;
-
-    public function __construct() {
-        $this->model = new UserModels;
+    public function __construct() 
+    {
+        $this->setModel("UserModels");
     }
 
     public function register(Request $request, Response $response)
     {
         $data = $request->getParsedBody();
 
-        $model = $this->model;
-
-        $msg = $model->register($data);
+        $msg = $this->getModelMethod("register", $data);
 
         return $response->withJson($msg, 201);
     }
@@ -29,9 +26,7 @@ class UserControllers
     {
         $searchUserByName = $request->getQueryParam('search_user');
 
-        $model = $this->model;
-
-        $data = $model->dashboard($searchUserByName);
+        $data = $this->getModelMethod("dashboard", ["search_user" => $searchUserByName]);
 
         return $response->withJson($data);
     }
@@ -40,9 +35,7 @@ class UserControllers
     {
         $id = $request->getAttribute('id');
 
-        $model = $this->model;
-
-        $data = $model->userByID($id);
+        $data = $this->getModelMethod("userByID", ["id" => $id]);
 
         if (isset($data["status"]) && $data["status"] == "error") {
             return $response->withJson($data, 404);
@@ -56,9 +49,7 @@ class UserControllers
         $id = $request->getAttribute('id');
         $data = $request->getParsedBody();
 
-        $model = $this->model;
-
-        $msg = $model->update($id, $data);
+        $msg = $this->getModelMethod("updateUser", ["id" => $id, "data" => $data]);
 
         return $response->withJson($msg);
     }
@@ -67,9 +58,7 @@ class UserControllers
     {
         $id = $request->getAttribute('id');
 
-        $model = $this->model;
-
-        $msg = $model->delete($id);
+        $msg = $this->getModelMethod("destroy", ["id" => $id]);
 
         return $response->withJson($msg);
     }

@@ -6,6 +6,7 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 
 use App\Helpers\Validation;
 use App\Helpers\Model;
+use App\Helpers\Messages;
 
 class UserMiddlewares extends Model
 {
@@ -15,9 +16,7 @@ class UserMiddlewares extends Model
 
         $cpf = $data["cpf"];
 
-        $sql = "SELECT cpf FROM cadastro_usuarios WHERE cpf = :cpf";
-
-        $stmt = $this->execute($sql, [":cpf" => $cpf]);
+        $stmt = $this->read("cadastro_usuarios", "cpf", "cpf = :cpf", ["cpf" => $cpf]);
 
         $row = $stmt->rowCount();
 
@@ -60,7 +59,7 @@ class UserMiddlewares extends Model
         return Validation::send($errors, $request, $response, $next);
     }
 
-    public function fieldValidationOfUserSearch (Request $request, Response $response, $next)
+    public function fieldValidationOfUserSearch(Request $request, Response $response, $next)
     {
         $searchUserByName = $request->getQueryParam('search_user');
 
