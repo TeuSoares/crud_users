@@ -21,7 +21,7 @@
 
 ![Página do usuário](https://i.imgur.com/CXOPOAq.png)
 
-### 3 - Edição
+### 4 - Edição
 > Formulário de edição do usuário
 
 ![Edição do usuário](https://i.imgur.com/466Z4LE.png)
@@ -33,7 +33,7 @@
 * PHP
 * Banco de dados (MySql)
 * Styled-Components
-* Arquitetura MVC (Slim Framework)
+* Arquitetura MVC
 
 ## Funcionalidades
 * [x] Cadastro de usuários, com as devidas validações de inputs
@@ -105,9 +105,9 @@ Inicializando o projeto 👇
     npm run dev
 ```
 
-## Links
+## Vídeo de apresentação
 
-* Apresentação no YouTube: https://www.youtube.com/watch?v=nyWizV9M9hw
+https://user-images.githubusercontent.com/70549313/233874112-c15e639d-674c-4f01-9b3b-508a9595f716.mp4
 
 ## Autor
 
