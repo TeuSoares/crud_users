@@ -4,11 +4,13 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Footer from "./components/Footer/Footer";
 import Header from "./components/Header";
 
+// Styles
+import { Container } from "./styles/styles";
+
 // Pages
 import Dashboard from "./pages/Dashboard";
 import Register from "./pages/Register";
 import User from "./pages/User";
-import { Container } from "./styles/styles";
 
 const App = () => {
   return ( 

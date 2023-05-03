@@ -59,6 +59,7 @@ const Register = () => {
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setDataForm({ ...dataForm!, [e.target.name]: e.target.value});
+        console.log("change");
     };
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -117,7 +118,7 @@ const Register = () => {
                 <label htmlFor="name_mother">Nome da Mãe:</label>
                 <input type="text" name="name_mother" onChange={handleChange} value={dataForm.name_mother} />
 
-                <button type="submit">Cadastrar</button>
+                <button type="submit">{!id ? "Cadastrar" : "Atualizar"}</button>
             </form>
         </Container>
     );

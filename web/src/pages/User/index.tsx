@@ -1,7 +1,7 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 // Hooks
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import useMessage from "../../hooks/useMessage";
 import useQuery from "../../hooks/useQuery";
 

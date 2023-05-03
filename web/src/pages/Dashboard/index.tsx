@@ -19,8 +19,7 @@ interface IUsers {
 const Dashboard = () => {
     const [users, setUsers] = useState<IUsers[]>();
     const [queryUser, setQueryUser] = useState<string>("");
-    const [valueSearch, setValueSearch] = useState<string>("");
-    const [changeQuery, setChangeQuery] = useState<boolean>(false);
+    const [isQuery, setIsQuery] = useState<boolean>(false);
 
     const handleQuery = useQuery();
 
@@ -28,7 +27,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         const getAllUsers = async () => {
-            const { status, data } = await handleQuery("GET", !valueSearch ? "dashboard" : `dashboard?search_user=${valueSearch}`);
+            const { status, data } = await handleQuery("GET", !isQuery ? "dashboard" : `dashboard?search_user=${queryUser}`);
 
             if(status === "success") {
                 for(const users of data){
@@ -49,17 +48,17 @@ const Dashboard = () => {
         }
 
         getAllUsers();
-    }, [changeQuery]);
+    }, [isQuery]);
 
-    const handleSearchUser = () => {
-        setValueSearch(queryUser);
-        setChangeQuery(!changeQuery);
-    }
+    useEffect(() => {
+        if(!queryUser){
+            setIsQuery(false);
+        }
+    }, [queryUser]);
 
-    const clearSearch = () => {
+    const clearQuery = () => {
         setQueryUser("");
-        setValueSearch("");
-        setChangeQuery(!changeQuery);
+        setIsQuery(false);
     }
 
     return ( 
@@ -69,10 +68,10 @@ const Dashboard = () => {
                 <h1>Lista de usuários</h1>
                 <div>
                     <input type="text" name="search" onChange={(e) => setQueryUser(e.target.value)} value={queryUser} />
-                    {!valueSearch ? (
-                        <button type="button" onClick={handleSearchUser}>Pesquisar</button>
+                    {!isQuery ? (
+                        <button type="button" onClick={() => setIsQuery(true)}>Pesquisar</button>
                     ) : (
-                        <button type="button" onClick={clearSearch}>Limpar</button>
+                        <button type="button" onClick={clearQuery}>Limpar</button>
                     )}
                 </div>
             </Header>
