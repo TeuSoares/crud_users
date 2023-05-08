@@ -31,6 +31,13 @@ export const Container = styled.section`
         margin-left: 1rem;
     }
 
+    span {
+        position: relative;
+        top: -10px;
+        font-size: .9em;
+        color: rgb(186, 38, 38);
+    }
+
     button{
         background-color: #1f3156;
         border: none;
