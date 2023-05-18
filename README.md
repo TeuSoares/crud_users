@@ -34,6 +34,9 @@
 * Banco de dados (MySql)
 * Styled-Components
 * Arquitetura MVC
+* Criação de APIs REST utilizando Slim-Framework
+* Formulários avançados com React Hook Form e Zod
+* Consumo de API com React Query
 
 ## Funcionalidades
 * [x] Cadastro de usuários, com as devidas validações de inputs
