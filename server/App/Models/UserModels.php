@@ -21,6 +21,10 @@ class UserModels extends Model
 
         $this->create("cadastro_usuarios", $params);
 
+        if ($this->fail()) {
+            return $this->fail();
+        }
+
         return Messages::setMessage("success", "Cadastro realizado com sucesso!");
     }
 
@@ -36,6 +40,10 @@ class UserModels extends Model
 
         $stmt = $this->read("cadastro_usuarios", "id_usuario, nome, cpf, data_nascimento, sexo", $terms);
 
+        if (!is_null($this->fail())) {
+            return $this->fail();
+        }
+
         return $stmt->fetchAll();
     }
 
@@ -44,6 +52,10 @@ class UserModels extends Model
         $id = $data["id"];
 
         $stmt = $this->read("cadastro_usuarios", "*", "id_usuario = :id_usuario", ["id_usuario" => $id]);
+
+        if (!is_null($this->fail())) {
+            return $this->fail();
+        }
 
         $row = $stmt->rowCount();
 
@@ -70,6 +82,10 @@ class UserModels extends Model
 
         $this->update("cadastro_usuarios", $setParams, "id_usuario = :id_usuario", ["id_usuario" => $id]);
 
+        if (!is_null($this->fail())) {
+            return $this->fail();
+        }
+
         return Messages::setMessage("success", "Dados atualizados com sucesso!");
     }
 
@@ -78,6 +94,10 @@ class UserModels extends Model
         $id = $data["id"];
 
         $this->delete("cadastro_usuarios", "id_usuario = :id_usuario", ["id_usuario" => $id]);
+
+        if (!is_null($this->fail())) {
+            return $this->fail();
+        }
 
         return Messages::setMessage("success", "Dados deletados com sucesso!");
     }

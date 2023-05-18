@@ -1,12 +1,16 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
+import axios, { AxiosError } from "axios";
 
 // Hooks
-import { useState, useEffect } from "react";
 import useMessage from "../../hooks/useMessage";
-import useQuery from "../../hooks/useQuery";
+import { useMutation, useQuery } from "react-query";
 
 // Styles
 import { Box, Button, Card, Container, Header } from "./styles";
+import { Message } from "../../styles/styles";
+
+// Components
+import Loading from "../../components/Loading";
 
 interface IUser {
     id_usuario: string;
@@ -20,96 +24,90 @@ interface IUser {
     uf: string;
 }
 
+interface IMessage {
+    status: string;
+    message: string;
+}
+
 const User = () => {
     const { id } = useParams();
-
-    const [user, setUser] = useState<IUser>();
-
-    const handleQuery = useQuery();
 
     const { msg, handleSetMessage } = useMessage();
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const getUserByID = async () => {
-            const { status, data } = await handleQuery("GET", `user/${id}`);
+    const { data, isLoading, error } = useQuery<IUser, AxiosError<IMessage>>(["user", id], async ({ queryKey }) => {
+        const id_user = queryKey[1];
 
-            if(status === "success") {
-                const date = new Date(data.data_nascimento);
-                const newsDate = date.toLocaleDateString("pt-BR", {timeZone: 'UTC'});
+        const response = await axios.get(`http://localhost:8080/api/user/${id_user}`);
 
-                const cpf = data.cpf;
-                const newsCpf = `${cpf.slice(0, 3)}.${cpf.slice(3, 6)}.${cpf.slice(6, 9)}-${cpf.slice(9, 11)}`;
+        return response.data;
+    }, {
+        retry: 3,
+    });
 
-                data.data_nascimento = newsDate;
-                data.cpf = newsCpf;
+    const mutation = useMutation({
+        mutationFn: async () => {
+            const { data } = await axios.delete(`http://localhost:8080/api/delete/${id}`)
 
-                setUser(data);
-            }else if(status === "error"){
-                handleSetMessage(data);
-            }
-        }
-
-        getUserByID();
-    }, []);
-
-    const handleDelete = async () => {
-        const { status, data } = await handleQuery("DELETE", `delete/${id}`);
-
-        if(status === "success") {
+            return data;
+        },
+        onSuccess: (data) => {
             navigate("/", {state: data});
-        }else if(status === "error"){
-            handleSetMessage(data);
+        },
+        onError: (error: any) => {
+            handleSetMessage(error.response.data);
         }
-    }
+    });
 
     return ( 
         <Container>
-            {msg && msg}
-            {user && (
+            {isLoading && <Loading />}
+            {error && <Message status="error">{error?.response?.data?.message}</Message>}
+            {data && (
                 <>
+                    {msg && msg}
                     <Header>
-                        <h1>Usuário: #{user.id_usuario} {user.nome}</h1>
+                        <h1>Usuário: #{data.id_usuario} {data.nome}</h1>
                         <div>
                             <Button type="button" background="#1f3156" backgroundHover="#192742">
-                                <Link to={`/user/update/${user.id_usuario}`}>Editar</Link>
+                                <Link to={`/user/update/${data.id_usuario}`}>Editar</Link>
                             </Button>
-                            <Button type="button" background="#ce3434" backgroundHover="#9e3535" onClick={handleDelete}>Excluir</Button>
+                            <Button type="button" background="#ce3434" backgroundHover="#9e3535" onClick={() => mutation.mutateAsync()}>Excluir</Button>
                         </div>
                     </Header>
                     <Box>
                         <Card>
                             <h5>Nome:</h5>
-                            <span>{user.nome}</span>
+                            <span>{data.nome}</span>
                         </Card>
                         <Card>
                             <h5>Nome da Mãe:</h5>
-                            <span>{user.nome_mae}</span>
+                            <span>{data.nome_mae}</span>
                         </Card>
                         <Card>
                             <h5>CPF</h5>
-                            <span>{user.cpf}</span>
+                            <span>{data.cpf}</span>
                         </Card>
                         <Card>
                             <h5>Data de Nascimento:</h5>
-                            <span>{user.data_nascimento}</span>
+                            <span>{data.data_nascimento}</span>
                         </Card>
                         <Card>
                             <h5>Local:</h5>
-                            <span>{user.local_nascimento}</span>
+                            <span>{data.local_nascimento}</span>
                         </Card>
                         <Card>
                             <h5>UF:</h5>
-                            <span>{user.uf}</span>
+                            <span>{data.uf}</span>
                         </Card>
                         <Card>
                             <h5>Estado Civil:</h5>
-                            <span>{user.estado_civil}</span>
+                            <span>{data.estado_civil}</span>
                         </Card>
                         <Card>
                             <h5>Sexo:</h5>
-                            <span>{user.sexo}</span>
+                            <span>{data.sexo}</span>
                         </Card>
                     </Box>
                 </>

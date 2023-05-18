@@ -19,6 +19,10 @@ class UserControllers extends Controller
 
         $msg = $this->getModelMethod("register", $data);
 
+        if (isset($msg["status"]) && $msg["status"] == "error") {
+            return $response->withJson($msg, 500);
+        }
+
         return $response->withJson($msg, 201);
     }
 
@@ -27,6 +31,10 @@ class UserControllers extends Controller
         $searchUserByName = $request->getQueryParam('search_user');
 
         $data = $this->getModelMethod("dashboard", ["search_user" => $searchUserByName]);
+
+        if (isset($data["status"]) && $data["status"] == "error") {
+            return $response->withJson($data, 500);
+        }
 
         return $response->withJson($data);
     }
@@ -37,8 +45,10 @@ class UserControllers extends Controller
 
         $data = $this->getModelMethod("userByID", ["id" => $id]);
 
-        if (isset($data["status"]) && $data["status"] == "error") {
+        if (isset($data["status"]) && $data["message"] == "Usuário não encontrado!") {
             return $response->withJson($data, 404);
+        } else if (isset($data["status"]) && $data["message"] == "Houve algum problema no servidor. Tente novamente mais tarde!") {
+            return $response->withJson($data, 500);
         }
 
         return $response->withJson($data);
@@ -51,6 +61,10 @@ class UserControllers extends Controller
 
         $msg = $this->getModelMethod("updateUser", ["id" => $id, "data" => $data]);
 
+        if (isset($msg["status"]) && $msg["status"] == "error") {
+            return $response->withJson($msg, 500);
+        }
+
         return $response->withJson($msg);
     }
 
@@ -59,6 +73,10 @@ class UserControllers extends Controller
         $id = $request->getAttribute('id');
 
         $msg = $this->getModelMethod("destroy", ["id" => $id]);
+
+        if (isset($msg["status"]) && $msg["status"] == "error") {
+            return $response->withJson($msg, 500);
+        }
 
         return $response->withJson($msg);
     }

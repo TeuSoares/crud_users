@@ -5,7 +5,15 @@ use App\Config\Connect;
 
 abstract class Model 
 {
-    private function execute(string $query, array $binds = []): \PDOStatement
+    /**
+     * @var array|null
+     */
+    private $fail;
+
+    /**
+     * @return \PDOStatement|array
+     */
+    private function execute(string $query, array $binds = [])
     {
         try {
             $stmt = Connect::getInstance()->prepare($query);
@@ -20,13 +28,21 @@ abstract class Model
 
             return $stmt;
         } catch (\PDOException $e) {
-            http_response_code(500);
             // echo $e->getMessage();
-            die(json_encode(Messages::setMessage("error", "Houve algum problema no servidor. Tente novamente mais tarde!")));
+            $this->fail = Messages::setMessage("error", "Houve algum problema no servidor. Tente novamente mais tarde!");
         }
     }
 
-    protected function create(string $entity, array $data): bool
+    protected function fail(): ?array
+    {
+        if (!empty($this->fail)) {
+            return $this->fail;
+        }
+
+        return null;
+    }
+
+    protected function create(string $entity, array $data): void
     {
         $columns = implode(", ", array_keys($data));
         $values = ":" . implode(", :", array_keys($data));
@@ -34,8 +50,6 @@ abstract class Model
         $sql = "INSERT INTO {$entity} ({$columns}) VALUES ({$values})";
 
         $this->execute($sql, $data);
-
-        return true;
     }
 
     protected function read(string $entity, string $fields = "*", string $terms = null, array $params = []): ?\PDOStatement
@@ -47,7 +61,7 @@ abstract class Model
         return $this->execute($sql, $params);
     }
 
-    protected function update(string $entity, array $data, string $terms, array $params): bool
+    protected function update(string $entity, array $data, string $terms, array $params): void
     {
         $dateSet = [];
 
@@ -62,17 +76,13 @@ abstract class Model
         $values = array_merge($data, $params);
 
         $this->execute($sql, $values);
-
-        return true;
     }
 
-    protected function delete(string $entity, string $terms, array $params): bool
+    protected function delete(string $entity, string $terms, array $params): void
     {
         $sql = "DELETE FROM {$entity} WHERE {$terms}";
 
         $this->execute($sql, $params);
-
-        return true;
     }
 
     private function filter(array $data): ?array

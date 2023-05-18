@@ -11,6 +11,7 @@ import { Container } from "./styles/styles";
 import Dashboard from "./pages/Dashboard";
 import Register from "./pages/Register";
 import User from "./pages/User";
+import Update from "./pages/User/Update";
 
 const App = () => {
   return ( 
@@ -22,7 +23,7 @@ const App = () => {
             <Route path="/" element={<Dashboard />} />
             <Route path="/register" element={<Register />} />
             <Route path="/user/:id" element={<User />} />
-            <Route path="/user/update/:id" element={<Register />} />
+            <Route path="/user/update/:id" element={<Update />} />
           </Routes>
         </main>
         <Footer />

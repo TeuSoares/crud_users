@@ -8,7 +8,7 @@ interface IMessage {
 }
 
 const useMessage = () => {
-    const [msg, setMsg] = useState<JSX.Element | undefined>();
+    const [msg, setMsg] = useState<JSX.Element | undefined>(undefined);
 
     const location = useLocation();
 
