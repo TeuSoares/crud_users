@@ -1,5 +1,5 @@
 <?php 
-require_once "vendor/autoload.php";
+require_once __DIR__ . "/vendor/autoload.php";
 
 $config["displayErrorDetails"] = true;
 
@@ -14,6 +14,6 @@ $app->add(function ($req, $res, $next) {
     ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
 });
 
-require_once "App/Routes/routes.php";
+require_once __DIR__ . "/App/Routes/routes.php";
 
 $app->run();
