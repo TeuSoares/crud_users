@@ -48,10 +48,11 @@
 
 ## Como rodar
 
-Pré-Requisitos
-* NodeJS: https://nodejs.org/en/
-* WampServer: https://www.wampserver.com/en/
-* Composer: https://getcomposer.org/download/
+Pré-Requisitos (Pode configurar um ambiente Docker para rodar o projeto)
+* Node.js
+* PHP 7.4.26
+* MySQL
+* Composer
   
 Antes de tudo, clone este repositório
 ```bash
@@ -59,18 +60,10 @@ Antes de tudo, clone este repositório
 ```
 
 Configurando servidor 👇
-1. Execute o seu servidor wampserver
 
-2. Acesse a URL http://localhost/phpmyadmin/index.php
-   
-3. Crie um novo banco de dados e importe a tabela que está dentro da pasta database
-   
-4. Configure uma variável de ambiente de usuário no Path com o seguinte valor:
-```bash
-    C:\wamp64\bin\php\php7.4.26
-```
+1. Acesse o MySQL, crie um novo banco de dados e importe a tabela que está dentro da pasta database
   
-5. Instale as dependências dentro de server
+2. Instale as dependências dentro da pasta server
 ```bash
     cd server
 ```
@@ -78,7 +71,7 @@ Configurando servidor 👇
     composer install
 ```
 
-6. Crie um arquivo `.env` dentro da pasta server com as informações do banco de dados
+3. Crie um arquivo `.env` dentro da pasta server com as informações do banco de dados
 ```
 DB_HOST = "localhost"
 DB_NAME = <nomeDoBanco>
@@ -86,7 +79,7 @@ DB_USERNAME = "root"
 DB_PASSWORD = ""
 ```
 
-7. Rode o servidor:
+4. Rode o servidor:
 ```bash
     composer run server
 ```
